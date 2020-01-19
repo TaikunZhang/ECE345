@@ -1,0 +1,6 @@
+  # build an executable named myprog from myprog.c
+  all: sort1.cpp sort2.cpp
+ 	  g++ -g -Wall -o sort1 sort2 sort1.cpp sort2.cpp
+
+  clean: 
+	  $(RM) sort1 sort2
