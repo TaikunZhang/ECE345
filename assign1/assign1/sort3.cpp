@@ -28,28 +28,15 @@ using namespace std::chrono;
 
 using namespace std;
 
-typedef struct node{
-    double key;
-    vector<string> values;
-    node(int k, vector<string>& v){
-        key = k;
-        values = v;
-    }
-    node& operator =(node &n){
-        this->key = n.key;
-        this->values = n.values;
-        return *this;
-    }
-}node;
 
-void bubbleSort(vector<node>& arr, int n)  
+void bubbleSort(vector<double>& arr, int n)  
 {  
     int i, j;
     for (i = 0; i < n-1; i++){
         for (j = 0; j < n-i-1; j++){
             
-            if (arr[j].key > arr[j+1].key){
-                node temp = arr[j];
+            if (arr[j] > arr[j+1]){
+                double temp = arr[j];
                 arr[j] = arr[j+1];
                 arr[j+1] = temp;
             }
@@ -59,7 +46,7 @@ void bubbleSort(vector<node>& arr, int n)
 
 
 
-void cocktailSort(vector<node>& arr, int n)
+void cocktailSort(vector<double>& arr, int n)
 { 
     bool swapped = true;
     int start = 0;
@@ -69,10 +56,8 @@ void cocktailSort(vector<node>& arr, int n)
         swapped = false;
   
         for (int i = start; i < end; ++i) {
-            if (arr[i].key > arr[i + 1].key) {
-                node temp = arr[i];
-                arr[i] = arr[i+1];
-                arr[i+1] = temp;
+            if (arr[i] > arr[i + 1]) {
+                swap(arr[i], arr[i + 1]);
                 swapped = true;
             }
         }
@@ -83,8 +68,8 @@ void cocktailSort(vector<node>& arr, int n)
         --end;
         
         for (int i = end - 1; i >= start; --i) {
-            if (arr[i].key > arr[i + 1].key) {
-                node temp = arr[i];
+            if (arr[i] > arr[i + 1]) {
+                double temp = arr[i];
                 arr[i] = arr[i+1];
                 arr[i+1] = temp;
                 swapped = true;
@@ -93,12 +78,14 @@ void cocktailSort(vector<node>& arr, int n)
         ++start;
     }
 }
- 
-int main(int argc, char* argv[])
-{
+  
+/*
+ * 
+ */
+int main(int argc, char** argv) {
     ifstream myfile (argv[1]);
     string line,word;
-    vector<node> arr;
+    vector<double> arr;
     //int size = 0;
     //int limit = 25000;
     if (myfile.is_open()){
@@ -106,19 +93,13 @@ int main(int argc, char* argv[])
         while (!myfile.eof()){
             getline (myfile,line);
             stringstream s(line); 
-            if(myfile.eof())break;
             int count = 0;
-            int key;
-            vector<string> values;
-            while (getline(s, word, ',') /*&& size <= limit*/) { 
-                if(count < 1){
-                    key = stoi(word);
-                    count++;
-                }
-                values.push_back(word);
+            while (getline(s, word, ',') && count < 1 /*&& size <= limit*/) { 
+                int k = stoi(word);
+                arr.push_back(k);
+                count++; 
                 //size++;
             }
-            arr.push_back(node(key,values));
         }
             myfile.close();
     } 
@@ -127,19 +108,9 @@ int main(int argc, char* argv[])
     bubbleSort(arr, n);
     //cocktailSort(arr, n);
     //high_resolution_clock::time_point t_end = high_resolution_clock::now();
+    for(int i = 0; i< arr.size(); ++i)
+        cout << arr[i] << endl;
 
-    for(int i = 0; i < arr.size(); i++){
-        if(i == arr.size()-1)
-            cout << arr[i].key << endl;
-        else
-            cout << arr[i].key << ',';
-        for(int j = 0; j < arr[i].values.size(); j++){
-            if(j == arr[i].values.size()-1)
-                cout << arr[i].values[j] << endl;
-            else
-                cout << arr[i].values[j] << ',';
-        }
-    }
     //auto duration = duration_cast<nanoseconds>(t_end-t_start).count();
     //cout << duration << endl;
     //cout << arr.size() << endl;

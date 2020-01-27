@@ -1,0 +1,22 @@
+# Please provide running instructions with examples
+instructions = """
+There are 4 .cpp files:
+sort1.cpp - InsertionSort
+sort2.cpp - MergeSort
+sort3.cpp - BubbleSort
+sort4.cpp - CocktailSort
+
+type in 'make "name of executable" ' to compile, for example 'make sort1' will generate the executable for sort1.cpp
+type in ' "name of executable" "path of input csv file" ' to run the sorting algorithm for example 'sort1 a1.large.csv' 
+the sorted keys are printed to the terminal
+"""
+
+[[Taikun Zhang]]
+name = "Taikun Zhang"
+utor = "zhan4776"
+nmbr = "1004050643"
+
+[[student]]
+name = "Maytham Mahroos"
+utor = "mahroos2"
+nmbr = "1002900480"
