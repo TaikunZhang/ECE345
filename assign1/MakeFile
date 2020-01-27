@@ -1,6 +1,6 @@
   # build an executable named myprog from myprog.c
-  all: sort1.cpp sort2.cpp
- 	  g++ -g -Wall -o sort1 sort2 sort1.cpp sort2.cpp
+  all: sort1.cpp sort2.cpp sort3.cpp
+ 	  g++ -g -Wall -o sort1 sort2 sort3 sort4 sort1.cpp sort2.cpp sort3.cpp sort4.cpp
 
   clean: 
-	  $(RM) sort1 sort2
+	  $(RM) sort1 sort2 sort3 sort4
