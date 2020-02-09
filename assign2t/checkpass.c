@@ -30,7 +30,7 @@ void print_entry(struct hash_node* ptr);
 void delete_entry(struct hash_node* ptr);
 struct passwords * passwords_init(char *word_array, long size);
 void passwords_destroy(struct passwords *passwords);
-void check_password(passwords* passwords, char *s,  long size);
+void check_password(passwords* passwords, char *str,  long size);
 hash_node* passwords_lookup(passwords* passwords, char* p, long size);
 char* reverse (char* s);
 bool check_invalid(char* s);
@@ -217,36 +217,26 @@ char* reverse(char* s){
     return new;
 }
 
-
 //finds if passwords are VALID or Invalid
-void check_password(passwords* passwords, char *s, long size){
+void check_password(passwords* passwords,char *str, long size){
 
-	//printf("HERE\n");
-	bool invalid_password = false;
-	bool exists = false;
-	bool reverse_exists = false;
-	char* r = reverse(s);
-	//printf("REVERSE IS %s, Normal is %s\n", r,s);
-	hash_node* node = passwords_lookup(passwords, s, size/1000);
-	hash_node* r_node = passwords_lookup(passwords, r, size/1000);
+        bool invalid_password = false;
+        bool exists = false;
+        bool reverse_exists = false;
+        char* r = reverse(str);
+        //printf("REVERSE IS %s, Normal is %s", r,str);
+	    hash_node* node = passwords_lookup(passwords, str, size/1000);
+        hash_node* r_node = passwords_lookup(passwords, r, size/1000);
 
-	invalid_password = check_invalid(s);
-	if(node != NULL) exists = true;
-	if(r_node != NULL) reverse_exists = true;
+        invalid_password = check_invalid(str);
+        if(node != NULL) exists = true;
+        if(r_node != NULL) reverse_exists = true;
 
-	if(invalid_password){
-		printf("INVALID password, password too big or too small or has complex characters : %s\n", s);
-	} 
-	else if(exists){
-		printf("INVALID password, password exists : %s\n", s);
-	} 
-	else if (reverse_exists){
-		printf("INVALID password, reverse password exists : %s\n", s);
-	}
-	else {
-		printf("VALID password : %s\n", s);
-	}
-	return;
+        if(invalid_password || exists || reverse_exists)
+            printf("INVALID password : %s\n", str);
+        else
+            printf("Valid password : %s\n", str);
+
 }
 
 int main(int argc, char *argv[])
@@ -255,10 +245,6 @@ int main(int argc, char *argv[])
 	void *addr;
 	struct stat sb;
 	struct passwords *passwords;
-
-	// char* s = malloc(strlen(argv[2] + 1));
-	// s = strdup(argv[2]);
-	// printf("%s , argc is %d\n",s,argc);
 
 	/* open file */
 	if ((fd = open(argv[1], O_RDONLY)) < 0) {
@@ -282,8 +268,7 @@ int main(int argc, char *argv[])
 
 	passwords = passwords_init(addr, sb.st_size);
 	//passwords_output(passwords);
-    check_password(passwords, argv[2], sb.st_size);
-	//printword(s);
+    check_password(passwords,argv[2],sb.st_size);
     passwords_destroy(passwords);
     munmap(addr, sb.st_size);
 
