@@ -221,7 +221,6 @@ char* reverse(char* s){
 //finds if passwords are VALID or Invalid
 void check_password(passwords* passwords, char *s, long size){
 
-	//printf("HERE\n");
 	bool invalid_password = false;
 	bool exists = false;
 	bool reverse_exists = false;
@@ -256,9 +255,9 @@ int main(int argc, char *argv[])
 	struct stat sb;
 	struct passwords *passwords;
 
-	// char* s = malloc(strlen(argv[2] + 1));
-	// s = strdup(argv[2]);
-	// printf("%s , argc is %d\n",s,argc);
+	if(argc < 3){
+		printf("Error, entered too few arguements.\n")
+	}
 
 	/* open file */
 	if ((fd = open(argv[1], O_RDONLY)) < 0) {
@@ -283,7 +282,6 @@ int main(int argc, char *argv[])
 	passwords = passwords_init(addr, sb.st_size);
 	//passwords_output(passwords);
     check_password(passwords, argv[2], sb.st_size);
-	//printword(s);
     passwords_destroy(passwords);
     munmap(addr, sb.st_size);
 
