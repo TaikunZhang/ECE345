@@ -24,6 +24,8 @@ typedef struct passwords {
 	struct hash_node** hash_table;
 }passwords;
 
+//int collisions;
+
 int hash( char *str, int size);
 void populate_passwords(struct passwords* passwords, char* word, int index);
 void print_entry(struct hash_node* ptr);
@@ -48,14 +50,15 @@ struct passwords *passwords_init(char *word_array, long size)
 	assert(passwords);
 
 	//dynamically allocate size number of nodes within hashtable
-	passwords->hash_table = (struct hash_node **)malloc((size / 1000) * sizeof(struct hash_node *));
+	passwords->hash_table = (struct hash_node **)malloc((size) * sizeof(struct hash_node *));
 	assert(passwords->hash_table);
-	passwords -> size = size / 1000;
+	passwords -> size = size;
+	//printf("size : %d\n", passwords -> size);
 
 	//iterate through the inputted string and parse for words
 	while (str != NULL){
 
-		int h = hash(str, size / 1000);
+		int h = hash(str, size);
 	    populate_passwords(passwords, str, h);
 		str = strtok(NULL,ignore);
 
@@ -83,6 +86,7 @@ void populate_passwords(struct passwords* passwords, char* word, int index){
 
 	//index is not null so iterate through nexted list
 	else{
+		//collisions++;
 		while(current != NULL){
 
 			//if word exists increment count and return
@@ -226,8 +230,8 @@ void check_password(passwords* passwords, char *s, long size){
 	bool reverse_exists = false;
 	char* r = reverse(s);
 	//printf("REVERSE IS %s, Normal is %s\n", r,s);
-	hash_node* node = passwords_lookup(passwords, s, size/1000);
-	hash_node* r_node = passwords_lookup(passwords, r, size/1000);
+	hash_node* node = passwords_lookup(passwords, s, size);
+	hash_node* r_node = passwords_lookup(passwords, r, size);
 
 	invalid_password = check_invalid(s);
 	if(node != NULL) exists = true;
@@ -255,9 +259,9 @@ int main(int argc, char *argv[])
 	struct stat sb;
 	struct passwords *passwords;
 
-	if(argc < 3){
-		printf("Error, entered too few arguements.\n")
-	}
+	// if(argc < 3){
+	// 	printf("Error, entered too few arguements.\n")
+	// }
 
 	/* open file */
 	if ((fd = open(argv[1], O_RDONLY)) < 0) {
@@ -279,9 +283,11 @@ int main(int argc, char *argv[])
 	/* close the file */
 	close(fd);
 
-	passwords = passwords_init(addr, sb.st_size);
+	//printf("size : %d\n", sb.st_size / 10);
+	passwords = passwords_init(addr, sb.st_size / 10);
+	//printf("Collsions : %d\n", collisions);
 	//passwords_output(passwords);
-    check_password(passwords, argv[2], sb.st_size);
+    check_password(passwords, argv[2], sb.st_size /10);
     passwords_destroy(passwords);
     munmap(addr, sb.st_size);
 

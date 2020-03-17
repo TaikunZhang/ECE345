@@ -1,0 +1,15 @@
+# Please provide running instructions with examples
+make file is provided, do "make checkpass"
+run the program by "checkpass passwords.txt password"
+the program will output if the password is valid or invalid and the reason why
+"""
+
+[[Taikun Zhang]]
+name = "Taikun Zhang"
+utor = "zhan4776"
+nmbr = "1004050643"
+
+[[student]]
+name = "Maytham Mahroos"
+utor = "mahroos2"
+nmbr = "1002900480"
